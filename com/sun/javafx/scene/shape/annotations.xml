@@ -1,0 +1,5 @@
+<root>
+    <item name='com.sun.javafx.scene.shape.PathUtils'>
+        <annotation name='java.lang.annotation.Deprecated'/>
+    </item>
+</root>
