@@ -6,14 +6,18 @@ public class PathUtils {
 
 	public Map<String,List<String>> map = new HashMap<String,List<String>>();
 
-	public PathUtils(String content){
-		this.map = Database.pathStoreInDb(content);
+    public Map<String,String> getCountryName = new HashMap<String,String>();
+
+	public PathUtils(String pathContent,String cityContent){
+
+        this.map = Database.pathStoreInDb(pathContent);
+        this.getCountryName = Database.cityReader( cityContent);
 	}
 
 	Queue<String> path = new LinkedList<String>();
 
 	public boolean isCityPresent(String city) {
-		Set<String> keys = map.keySet();
+        Set<String> keys = map.keySet();
 		if(keys.contains(city))
 			return true;
 		else {
@@ -62,10 +66,11 @@ public class PathUtils {
 		isDirectPath(from,to);
 		int length = path.size();
 		for(int i=0;i<length;i++){
+            String cityName = path.poll().toString();
 			if(i==0)
-				fullpath +=""+path.poll();
+				fullpath +=""+cityName+"["+getCountryName.get(cityName)+"]";
 			else
-				fullpath +="-->"+path.poll();
+				fullpath +="-->"+cityName+"["+getCountryName.get(cityName)+"]";
 		}
 		return fullpath;
 	}
