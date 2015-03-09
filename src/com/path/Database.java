@@ -21,15 +21,15 @@ class Database{
 		return map;
 	}
     public static  Map<String,String> cityReader(String content){
-        Map<String,String> readCountry = new HashMap<String,String>();
+        Map<String,String> getCountryName = new HashMap<String,String>();
         String[] lines = content.split("\r\n");
         for(String line:lines){
             if(line!=null) {
                 String path[] = line.split(",");
-                readCountry.put(path[0], path[1]);
+                getCountryName.put(path[0], path[1]);
             }
         }
-        return readCountry;
+        return getCountryName;
     }
 }
 
