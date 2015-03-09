@@ -30,6 +30,11 @@ public class PathUtilsTest {
  		PathUtils paths = new PathUtils(content);
  		assertTrue(paths.isDirectPath("Beijing", "Tokyo"));
 	}
+    @Test
+    public void isDirectpath_returns_true_if_direct_flight_between_Tokyo_to_Beijing(){
+        PathUtils paths = new PathUtils(content);
+        assertTrue(paths.isDirectPath("Tokyo", "Beijing"));
+    }
 
 	@Test
 	public void isDirectpath_returns_true_if_direct_flight_between_Singapore_to_Dubai(){
@@ -67,5 +72,11 @@ public class PathUtilsTest {
  		assertEquals(paths.getFullPath("Bangalore" , "Tokyo"),"Bangalore-->Singapore-->Seoul-->Beijing-->Tokyo");
 	}
 
-	
+    @Test
+    public void getFullPath_gives_the_full_path_between_Tokyo_to_Bangalore(){
+        PathUtils paths = new PathUtils(content);
+        assertEquals(paths.getFullPath("Tokyo" , "Bangalore"),"Tokyo-->Beijing-->Seoul-->Singapore-->Bangalore");
+    }
+
+
 }
