@@ -16,9 +16,8 @@ class ReadFile{
 			text = new String(chars);
 			reader.close();
 		} catch (IOException e) {
-			System.out.println("Something went wrong......."+e);
+			System.out.println("No database named "+fileName+" Found"+e);
 		}
-
   	 return text;
 	}
 	

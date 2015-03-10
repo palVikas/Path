@@ -29,7 +29,7 @@ public class PathUtils {
 		}
 	}
 
-	public List<Queue<String>> isDirectPath(String from,String to) {
+	public List<Queue<String>> getDirectPath(String from,String to) {
         Queue<String> path = new LinkedList<String>();
         List<Queue<String>> AllRoots = new ArrayList<Queue<String>>();
 		getPath(path, AllRoots, from, to);
@@ -62,13 +62,13 @@ public class PathUtils {
 	}
 
 	public List<String> getFullPath(String from,String to) {
-        List<Queue<String>> AllRoots = isDirectPath(from,to);
+        List<Queue<String>> AllRoots = getDirectPath(from,to);
         List<String> list = new ArrayList<String>();
         for(Queue<String> singleRoots:AllRoots) {
             String getfullpath = "";
             int length = singleRoots.size();
             for (int i = 0; i < length; i++) {
-                String cityName = singleRoots.poll().toString();
+                String cityName = singleRoots.poll();
                 if (i == 0)
                     getfullpath += "" + cityName + "[" + getCountryName.get(cityName) + "]";
                 else
