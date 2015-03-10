@@ -14,7 +14,6 @@ public class PathUtils {
         this.getCountryName = Database.cityReader( cityContent);
 	}
 
-	Queue<String> path = new LinkedList<String>();
 
 	public boolean isCityPresent(String city) {
         Set<String> keys = map.keySet();
@@ -30,49 +29,54 @@ public class PathUtils {
 		}
 	}
 
-	public boolean isDirectPath(String from,String to) {
-			path.add(from);
-		return (isPath(from,to));
+	public List<Queue<String>> isDirectPath(String from,String to) {
+        Queue<String> path = new LinkedList<String>();
+        List<Queue<String>> AllRoots = new ArrayList<Queue<String>>();
+		getPath(path, AllRoots, from, to);
+        return AllRoots;
 	}
 
-	public boolean isPath(String source,String destination){
-		Set<String> cities = map.keySet();
+	public void  getPath(Queue<String>path,List<Queue<String>> AllRoots,String source,String destination){
+		path.add(source);
+        Set<String> cities = map.keySet();
 		if(isCityPresent(source) && isCityPresent(destination)){
 
-			if(map.get(source).contains(destination)){
-				path.add(destination);
-				return true;
-			}
+            if(source.equals(destination)){
+                AllRoots.add(new LinkedList<String>(path));
+                path.remove(source);
+                return;
+            }
+            for(String city : cities){
+                if(city.equals(source)) {
+                    List<String> lists = map.get(city);
+                    for(String list:lists){
+                        if(!path.contains(list)){
+                            getPath(path, AllRoots, list, destination);
+                        }
+                    }
+                }
 
-			if(!map.get(source).contains(destination)){
-				for(String city : cities){
-					if(city.equals(source)) {
-						List<String> lists = map.get(city);
-						for(String list:lists){
-							if(!path.contains(list)){
-								path.add(list);
-								return isPath(list,destination);
-							}
-						}
-					}
-				}
 			}
 		}
-		return false;
+        path.remove(source);
 	}
 
-	public String getFullPath(String from,String to) {
-		String fullpath = ""; 
-		isDirectPath(from,to);
-		int length = path.size();
-		for(int i=0;i<length;i++){
-            String cityName = path.poll().toString();
-			if(i==0)
-				fullpath +=""+cityName+"["+getCountryName.get(cityName)+"]";
-			else
-				fullpath +="-->"+cityName+"["+getCountryName.get(cityName)+"]";
-		}
-		return fullpath;
-	}
-
+	public List<String> getFullPath(String from,String to) {
+        List<Queue<String>> AllRoots = isDirectPath(from,to);
+        List<String> list = new ArrayList<String>();
+        for(Queue<String> singleRoots:AllRoots) {
+            String getfullpath = "";
+            int length = singleRoots.size();
+            for (int i = 0; i < length; i++) {
+                String cityName = singleRoots.poll().toString();
+                if (i == 0)
+                    getfullpath += "" + cityName + "[" + getCountryName.get(cityName) + "]";
+                else
+                    getfullpath += "-->" + cityName + "[" + getCountryName.get(cityName) + "]";
+            }
+            list.add(getfullpath);
+        }
+        return list;
+    }
 }
+
