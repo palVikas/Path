@@ -30,8 +30,15 @@ class Path {
         if(args[4].equals("-a")) {
             for (String result : paths.getFullPath(source, destination))
                 System.out.println(result);
+            for (Integer cost : paths.TotalCost(source, destination)) {
+                    System.out.println("TotalCost : " + cost);
+                }
+
         }
-        else
+        else {
             System.out.println(paths.getFullPath(source, destination).get(0));
+            System.out.println("TotalCost : "+paths.TotalCost(source, destination).get(0));
+        }
+
     }
 }

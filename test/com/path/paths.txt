@@ -1,5 +1,11 @@
-Bangalore,Singapore
-Singapore,Seoul
-Singapore,Dubai
-Seoul,Beijing
-Beijing,Tokyo
+Bangalore,Singapore==>7000
+Singapore,Bangalore==>7000
+Singapore,Seoul==>2000
+Seoul,Singapore==>2000
+Dubai,Seoul==>5000
+Singapore,Dubai==>5500
+Dubai,Singapore==>5500
+Seoul,Beijing==>8000
+Beijing,Seoul==>8000
+Beijing,Tokyo==>6000
+Tokyo,Beijing==>6000
