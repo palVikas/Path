@@ -1,5 +1,7 @@
 package com.path;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.util.*;
 
 public class PathUtils {
@@ -22,8 +24,9 @@ public class PathUtils {
 		else {
 			for(String source : keys){
 				List<String> destination = map.get(source);
-				if(destination.contains(city))
-					return true;
+                if(destination.contains(city)) {
+                    return true;
+                }
 			}
 		return false;
 		}
@@ -39,7 +42,7 @@ public class PathUtils {
 	public void  getPath(Queue<String>path,List<Queue<String>> AllRoots,String source,String destination){
 		path.add(source);
         Set<String> cities = map.keySet();
-		if(isCityPresent(source) && isCityPresent(destination)){
+        if(isCityPresent(source) && isCityPresent(destination)){
 
             if(source.equals(destination)){
                 AllRoots.add(new LinkedList<String>(path));
@@ -50,8 +53,9 @@ public class PathUtils {
                 if(city.equals(source)) {
                     List<String> lists = map.get(city);
                     for(String list:lists){
-                        if(!path.contains(list)){
-                            getPath(path, AllRoots, list, destination);
+                        String[]list1 = list.split("==>");
+                        if(!path.contains(list1[0])){
+                            getPath(path, AllRoots, list1[0], destination);
                         }
                     }
                 }
@@ -60,6 +64,39 @@ public class PathUtils {
 		}
         path.remove(source);
 	}
+
+    public int giveCostOfTwoCities(String from,String to){
+        String cost = new String();
+        List<String> destinations = map.get(from);
+               for(String destination : destinations){
+                      if(to.equals(destination.split("==>")[0]))
+                               cost += destination.split("==>")[1];
+
+               }
+         return Integer.parseInt(cost);
+    }
+
+
+    public List<Integer> TotalCost(String from,String to){
+        List<Queue<String>> AllRoots = getDirectPath(from,to);
+        List<Integer> list = new ArrayList<Integer>();
+        for(Queue<String> singleRoots:AllRoots) {
+            int cost=0;
+            String src = singleRoots.peek();
+            int length = singleRoots.size();
+            for(int i=0;i<length;i++) {
+                String des = singleRoots.poll();
+                if(des!=null) {
+                    if (des == src)
+                        des = singleRoots.poll();
+                    cost = cost + giveCostOfTwoCities(src, des);
+                    src = des;
+                }
+            }
+            list.add(cost);
+        }
+        return list;
+    }
 
 	public List<String> getFullPath(String from,String to) {
         List<Queue<String>> AllRoots = getDirectPath(from,to);
