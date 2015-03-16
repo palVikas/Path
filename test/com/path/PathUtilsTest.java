@@ -88,7 +88,13 @@ public class PathUtilsTest {
     public void TotalCost_gives_the_fullCost_between_Bangalore_To_Tokyo() {
         result1.add(23000);
         result1.add(31500);
-        assertEquals(paths.TotalCost("Bangalore", "Tokyo"),result1 );
+        assertEquals(paths.TotalCost("Bangalore", "Tokyo"), result1);
+
+    }
+    @Test
+    public void TotalCost_gives_the_fullCost_between_Beijing_To_Bangalore() {
+        result1.add(17000);
+        assertEquals(paths.TotalCost("Beijing", "Bangalore"),result1 );
 
     }
 }
