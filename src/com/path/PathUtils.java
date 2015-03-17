@@ -1,6 +1,5 @@
 package com.path;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.util.*;
 
@@ -66,7 +65,7 @@ public class PathUtils {
 	}
 
     public int giveCostOfTwoCities(String from,String to){
-        String cost = new String();
+        String cost = "";
         List<String> destinations = map.get(from);
                for(String destination : destinations){
                       if(to.equals(destination.split("==>")[0]))
@@ -84,36 +83,47 @@ public class PathUtils {
             int cost=0;
             String src = singleRoots.peek();
             int length = singleRoots.size();
-            for(int i=0;i<length;i++) {
-                String des = singleRoots.poll();
-                if(des!=null) {
-                    if (des == src)
-                        des = singleRoots.poll();
-                    cost = cost + giveCostOfTwoCities(src, des);
-                    src = des;
-                }
-            }
+            cost = getTotalCost(singleRoots, cost, src, length);
             list.add(cost);
         }
         return list;
     }
 
-	public List<String> getFullPath(String from,String to) {
+    private int getTotalCost(Queue<String> singleRoots, int cost, String src, int length) {
+        for(int i=0;i<length;i++) {
+            String des = singleRoots.poll();
+            if(des!=null) {
+                if (des == src)
+                    des = singleRoots.poll();
+                cost = cost + giveCostOfTwoCities(src, des);
+                src = des;
+            }
+        }
+        return cost;
+    }
+
+    public List<String> getFullPath(String from,String to) {
         List<Queue<String>> AllRoots = getDirectPath(from,to);
         List<String> list = new ArrayList<String>();
         for(Queue<String> singleRoots:AllRoots) {
-            String getfullpath = "";
+            String result = "";
             int length = singleRoots.size();
-            for (int i = 0; i < length; i++) {
-                String cityName = singleRoots.poll();
-                if (i == 0)
-                    getfullpath += "" + cityName + "[" + getCountryName.get(cityName) + "]";
-                else
-                    getfullpath += "-->" + cityName + "[" + getCountryName.get(cityName) + "]";
-            }
-            list.add(getfullpath);
+            result += getFullPathInString(singleRoots, length);
+            list.add(result);
         }
         return list;
+    }
+
+    private String getFullPathInString(Queue<String> singleRoots, int length) {
+        String getfullpath = "";
+        for (int i = 0; i < length; i++) {
+            String cityName = singleRoots.poll();
+            if (i == 0)
+                getfullpath += "" + cityName + "[" + getCountryName.get(cityName) + "]";
+            else
+                getfullpath += "-->" + cityName + "[" + getCountryName.get(cityName) + "]";
+        }
+        return getfullpath;
     }
 }
 
